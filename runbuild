@@ -1,0 +1,65 @@
+#!/bin/bash
+
+_check() {
+    if [[ $? -ne 0 ]]; then
+        echo "Error processing: $1"
+        exit 1
+    fi
+}
+
+_do_build() {
+    if [[ ! -d "build" ]]; then
+        mkdir build
+    fi
+    cd build
+    echo "Building ..."
+    cmake ..
+    _check "cmake"
+    make -j8
+    _check "make"
+    cd ..
+}
+
+_clean() {
+    rm -rf \
+        build \
+        bin \
+        lib \
+        test/bin \
+        test/lib \
+        mck/lib \
+
+}
+
+if [[ "$#" = "0" ]]; then
+    # With no parameter: build
+    _do_build
+elif [[ "$1" = "clean" ]]; then
+    _clean
+    echo "Done."
+elif [[ "$1" = "test" ]]; then
+    _do_build
+    shift
+    echo "Testing... "
+    for test in `ls test/bin/*`
+    do
+        $test "$@"
+        _check "$test"
+    done
+elif [[ "$1" = "ctest" ]]; then
+    shift
+    _do_build
+    cd build
+    ctest $@
+    _check "ctest"
+    cd ..
+elif [[ "$1" = "demo" ]]; then
+    _do_build
+    ./bin/exe
+elif [[ "$1" = "check" ]]; then
+    _do_build
+    cd build
+    make cppcheck
+else
+    echo "Usage: `basename $0` [test|ctest|clean|demo|check]"
+fi
