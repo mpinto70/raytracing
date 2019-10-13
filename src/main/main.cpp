@@ -2,6 +2,7 @@
 #include "graphic/color.h"
 #include "graphic/ray.h"
 
+#include <cmath>
 #include <iostream>
 
 namespace graphic {
@@ -12,7 +13,7 @@ std::ostream& operator<<(std::ostream& out, const color& cr) {
 }
 
 namespace {
-bool hit_sphere(const geometry::vec3d& center, float radius, const graphic::ray& r) {
+float hit_sphere(const geometry::vec3d& center, float radius, const graphic::ray& r) {
     using geometry::vec3d;
 
     const vec3d oc = r.origin - center;
@@ -23,19 +24,31 @@ bool hit_sphere(const geometry::vec3d& center, float radius, const graphic::ray&
 
     float discriminant = b * b - 4 * a * c;
 
-    return discriminant >= 0.0f;
+    if (discriminant < 0) {
+        return -1.0f;
+    } else {
+        return (-b - std::sqrt(discriminant)) / (2 * a);
+    }
 }
 
 graphic::color to_color(const graphic::ray& ray) {
     using geometry::vec3d;
+    using graphic::color;
+    constexpr vec3d center {0, 0, -1};
 
-    if (hit_sphere({ 0, 0, -1 }, 0.5f, ray)) {
-        return { 127, 0, 0 };
+    const float t = hit_sphere(center, 0.5f, ray);
+    if (t > 0.0f) {
+        const vec3d N = unity(ray.point_at_parameter(t) - center);
+        const int r = static_cast<int>((N.x + 1.0f) * 127.5f);
+        const int g = static_cast<int>((N.y + 1.0f) * 127.5f);
+        const int b = static_cast<int>((N.z + 1.0f) * 127.5f);
+        return color{ r, g, b };
+    } else {
+        const auto unit_direction = unity(ray.direction);
+        const float ratio = 0.5f * (unit_direction.y + 1.0f);
+
+        return (1.0f - ratio) * color{ 255, 255, 255 } + ratio * color{ 127, 178, 255 };
     }
-    const auto unit_direction = unity(ray.direction);
-    const float t = 0.5f * (unit_direction.y + 1.0f);
-
-    return (1.0f - t) * graphic::color{ 255, 255, 255 } + t * graphic::color{ 127, 178, 255 };
 }
 }
 
