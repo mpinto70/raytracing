@@ -12,17 +12,36 @@ std::ostream& operator<<(std::ostream& out, const color& cr) {
 }
 
 namespace {
+bool hit_sphere(const geometry::vec3d& center, float radius, const graphic::ray& r) {
+    using geometry::vec3d;
+
+    const vec3d oc = r.origin - center;
+
+    const float a = dot(r.direction, r.direction);
+    const float b = 2.0f * dot(oc, r.direction);
+    const float c = dot(oc, oc) - radius * radius;
+
+    float discriminant = b * b - 4 * a * c;
+
+    return discriminant >= 0.0f;
+}
+
 graphic::color to_color(const graphic::ray& ray) {
-    const auto unit_direction = geometry::unity(ray.direction);
+    using geometry::vec3d;
+
+    if (hit_sphere({ 0, 0, -1 }, 0.5f, ray)) {
+        return { 127, 0, 0 };
+    }
+    const auto unit_direction = unity(ray.direction);
     const float t = 0.5f * (unit_direction.y + 1.0f);
 
-    return (1.0f - t) * graphic::color{ 0, 255, 0 } + t * graphic::color{ 255, 0, 0 };
+    return (1.0f - t) * graphic::color{ 255, 255, 255 } + t * graphic::color{ 127, 178, 255 };
 }
 }
 
 int main() {
-    int nx = 200;
-    int ny = 100;
+    int nx = 2000;
+    int ny = 1000;
     std::cout << "P3\n"
               << nx << " " << ny << "\n255\n";
 
