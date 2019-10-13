@@ -1,5 +1,6 @@
 set(graphic_srcs
     rayTest.cpp
+    colorTest.cpp
 )
 
 set(graphic_libs

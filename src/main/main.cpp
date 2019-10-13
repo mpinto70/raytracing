@@ -1,6 +1,14 @@
 #include "geometry/vec3d.h"
+#include "graphic/color.h"
 
 #include <iostream>
+
+namespace graphic {
+std::ostream& operator<< (std::ostream& out, const color& cr) {
+    out << cr.r << " " << cr.g << " " << cr.b;
+    return out;
+}
+}
 
 int main() {
     int nx = 200;

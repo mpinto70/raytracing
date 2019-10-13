@@ -2,7 +2,6 @@
 
 #include "geometry/vec3d.h"
 
-#include <cmath>
 #include <type_traits>
 
 namespace graphic {
