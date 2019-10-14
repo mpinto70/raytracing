@@ -24,7 +24,7 @@ TEST(sphere, hit_simple_and_direct) {
     hit_record record{};
     constexpr vec3d C{ 0, 0, -30 };
     constexpr float R = 5.0f;
-    constexpr ray r{ { 0, 0, 0 }, { 0, 0, -1 } };
+    const ray r{ { 0, 0, 0 }, { 0, 0, -1 } };
     const sphere s(C, R);
     constexpr vec3d hit_point{ 0, 0, -25 };
     constexpr vec3d normal{ 0, 0, 1 };
@@ -39,7 +39,7 @@ TEST(sphere, hit_out_of_range) {
     hit_record record{};
     constexpr vec3d C{ 0, 0, -30 };
     constexpr float R = 5.0f;
-    constexpr ray r{ { 0, 0, 0 }, { 0, 0, -1 } };
+    const ray r{ { 0, 0, 0 }, { 0, 0, -1 } };
     const sphere s(C, R);
 
     EXPECT_FALSE(s.hit(r, 35.5f, 500, record));

@@ -17,7 +17,7 @@ static_assert(std::is_pod<hit_record>::value);
 class hittable {
 public:
     virtual ~hittable() noexcept = default;
-    virtual bool hit(const ray& r, float t_min, float t_max, hit_record& record) const = 0;
+    virtual bool hit(const ray& r, float t_min, float t_max, hit_record& record) const noexcept = 0;
 };
 
 }

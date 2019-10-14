@@ -28,13 +28,13 @@ TEST(hit_record, creation) {
 using ::testing::Return;
 using ::testing::StrictMock;
 TEST(hittable, hit) {
-    StrictMock<mck::hittable_mock> hittable_mock;
-    hit_record record = { -3.0f, p1, n1 };
-    constexpr ray r{ p2, n2 };
-    constexpr float t_min = -10.0f;
-    constexpr float t_max = 15.0f;
+    mck::hittable_mock hittable_mock({true, false});
 
-    EXPECT_CALL(hittable_mock, hit(r, t_min, t_max, record)).WillOnce(Return(true));
-    hittable_mock.hit(r, -10.0f, 15.0f, record);
+    hit_record record = { -3.0f, p1, n1 };
+    const ray r{ p2, n2 };
+    EXPECT_TRUE(hittable_mock.hit(r, -10.0f, 15.0f, record));
+    EXPECT_EQ(hittable_mock.num_calls, 1u);
+    EXPECT_FALSE(hittable_mock.hit(r, -10.0f, 15.0f, record));
+    EXPECT_EQ(hittable_mock.num_calls, 2u);
 }
 }

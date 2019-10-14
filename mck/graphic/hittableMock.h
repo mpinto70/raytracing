@@ -10,10 +10,16 @@ bool operator==(const ray& lhs, const ray& rhs);
 namespace mck {
 class hittable_mock : public hittable {
 public:
-    hittable_mock();
+    explicit hittable_mock(bool res);
+    template <size_t N>
+    explicit hittable_mock(const bool (&res)[N])
+          : num_calls(0), results(res, res + N) {
+    }
     ~hittable_mock() noexcept override;
 
-    MOCK_CONST_METHOD4(hit, bool(const ray&, float, float, hit_record&));
+    bool hit(const ray& r, float t_min, float t_max, hit_record& record) const noexcept override;
+    mutable size_t num_calls;
+    std::vector<int> results;
 };
 }
 }

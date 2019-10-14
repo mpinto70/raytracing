@@ -1,16 +1,16 @@
 #include "sphere.h"
 
 namespace graphic {
-sphere::sphere(geometry::vec3d center, float radius)
+sphere::sphere(geometry::vec3d center, float radius) noexcept
       : center_(center), radius_(radius) {
 }
 
-bool sphere::hit(const ray& r, float t_min, float t_max, hit_record& record) const {
+bool sphere::hit(const ray& r, float t_min, float t_max, hit_record& record) const noexcept {
     using geometry::vec3d;
 
-    const vec3d oc = r.origin - center_;
-    const float a = dot(r.direction, r.direction);
-    const float b = 2.0f * dot(oc, r.direction);
+    const vec3d oc = r.origin() - center_;
+    const float a = dot(r.direction(), r.direction());
+    const float b = 2.0f * dot(oc, r.direction());
     const float c = dot(oc, oc) - radius_ * radius_;
     const float discriminant = b * b - 4 * a * c;
     if (discriminant >= 0) {

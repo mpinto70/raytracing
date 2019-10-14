@@ -9,14 +9,14 @@
 #include <memory>
 
 namespace graphic {
-std::ostream& operator<<(std::ostream& out, const color& cr) {
+std::ostream& operator<<(std::ostream& out, const color& cr) noexcept {
     out << cr.r << " " << cr.g << " " << cr.b;
     return out;
 }
 }
 
 namespace {
-graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& world) {
+graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& world) noexcept {
     using geometry::vec3d;
     using graphic::color;
     using graphic::hit_record;
@@ -27,8 +27,7 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
         const int b = static_cast<int>((rec.normal.z + 1.0f) * 127.5f);
         return color{ r, g, b };
     } else {
-        const auto unit_direction = unity(ray.direction);
-        const float ratio = 0.5f * (unit_direction.y + 1.0f);
+        const float ratio = 0.5f * (ray.direction().y + 1.0f);
 
         return (1.0f - ratio) * color{ 255, 255, 255 } + ratio * color{ 127, 178, 255 };
     }
