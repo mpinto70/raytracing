@@ -1,9 +1,12 @@
 set(graphic_srcs
     rayTest.cpp
     colorTest.cpp
+    hittableTest.cpp
+    sphereTest.cpp
 )
 
 set(graphic_libs
+    mck_graphic
     geometry
     graphic
 )

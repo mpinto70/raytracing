@@ -4,8 +4,10 @@
 
 namespace graphic {
 
+namespace {
 constexpr color C1{ 127, 128, 255 };
 constexpr color C2{ 0, 36, 48 };
+}
 
 TEST(color, creation) {
     static_assert(C1.r == 127);

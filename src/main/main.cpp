@@ -1,9 +1,12 @@
 #include "geometry/vec3d.h"
 #include "graphic/color.h"
+#include "graphic/hittable_list.h"
 #include "graphic/ray.h"
+#include "graphic/sphere.h"
 
 #include <cmath>
 #include <iostream>
+#include <memory>
 
 namespace graphic {
 std::ostream& operator<<(std::ostream& out, const color& cr) {
@@ -13,35 +16,15 @@ std::ostream& operator<<(std::ostream& out, const color& cr) {
 }
 
 namespace {
-float hit_sphere(const geometry::vec3d& center, float radius, const graphic::ray& r) {
-    using geometry::vec3d;
-
-    const vec3d oc = r.origin - center;
-
-    const float a = dot(r.direction, r.direction);
-    const float b = 2.0f * dot(oc, r.direction);
-    const float c = dot(oc, oc) - radius * radius;
-
-    float discriminant = b * b - 4 * a * c;
-
-    if (discriminant < 0) {
-        return -1.0f;
-    } else {
-        return (-b - std::sqrt(discriminant)) / (2 * a);
-    }
-}
-
-graphic::color to_color(const graphic::ray& ray) {
+graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& world) {
     using geometry::vec3d;
     using graphic::color;
-    constexpr vec3d center {0, 0, -1};
-
-    const float t = hit_sphere(center, 0.5f, ray);
-    if (t > 0.0f) {
-        const vec3d N = unity(ray.point_at_parameter(t) - center);
-        const int r = static_cast<int>((N.x + 1.0f) * 127.5f);
-        const int g = static_cast<int>((N.y + 1.0f) * 127.5f);
-        const int b = static_cast<int>((N.z + 1.0f) * 127.5f);
+    using graphic::hit_record;
+    hit_record rec{};
+    if (world.hit(ray, 0.0, 15000000.0f, rec)) {
+        const int r = static_cast<int>((rec.normal.x + 1.0f) * 127.5f);
+        const int g = static_cast<int>((rec.normal.y + 1.0f) * 127.5f);
+        const int b = static_cast<int>((rec.normal.z + 1.0f) * 127.5f);
         return color{ r, g, b };
     } else {
         const auto unit_direction = unity(ray.direction);
@@ -62,13 +45,18 @@ int main() {
     constexpr geometry::vec3d horizontal = { 4.0f, 0.0f, 0.0f };
     constexpr geometry::vec3d vertical = { 0.0f, 2.0f, 0.0f };
     constexpr geometry::vec3d origin = { 0.0f, 0.0f, 0.0f };
+    std::vector<std::unique_ptr<graphic::hittable>> hittables;
+    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 0, 0, -1 }, 0.3));
+    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 2, -1, -4 }, 2));
+    graphic::hittable_list world(std::move(hittables));
 
     for (int j = ny - 1; j >= 0; j--) {
         for (int i = 0; i < nx; i++) {
             const float u = float(i) / float(nx);
             const float v = float(j) / float(ny);
             const graphic::ray r{ origin, lower_left_corner + u * horizontal + v * vertical };
-            const graphic::color col = to_color(r);
+
+            const graphic::color col = to_color(r, world);
             std::cout << col << "\n";
         }
     }

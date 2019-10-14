@@ -46,4 +46,5 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CppCheck.cmake)
 
 # Recurse subdirectories
 add_subdirectory (src)
+add_subdirectory (mck)
 add_subdirectory (test)
