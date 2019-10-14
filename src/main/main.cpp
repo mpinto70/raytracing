@@ -46,8 +46,8 @@ int main() {
     constexpr geometry::vec3d vertical = { 0.0f, 2.0f, 0.0f };
     constexpr geometry::vec3d origin = { 0.0f, 0.0f, 0.0f };
     std::vector<std::unique_ptr<graphic::hittable>> hittables;
-    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 0, 0, -1 }, 0.3));
-    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 2, -1, -4 }, 2));
+    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ -1, 0, -1 }, 0.3));
+    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 1, -1, -4 }, 2));
     graphic::hittable_list world(std::move(hittables));
 
     for (int j = ny - 1; j >= 0; j--) {
