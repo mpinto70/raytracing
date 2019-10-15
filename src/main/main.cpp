@@ -5,8 +5,10 @@
 #include "graphic/sphere.h"
 
 #include <cmath>
+#include <fstream>
 #include <iostream>
 #include <memory>
+#include <unistd.h>
 
 namespace graphic {
 std::ostream& operator<<(std::ostream& out, const color& cr) noexcept {
@@ -32,31 +34,53 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
         return (1.0f - ratio) * color{ 255, 255, 255 } + ratio * color{ 127, 178, 255 };
     }
 }
+
+bool is_grid(const geometry::vec3d& u, const geometry::vec3d& v) {
+    const float roundx = std::round(u.x * 2);
+    const float roundy = std::round(v.y * 2);
+    return std::fabs(roundx - u.x * 2) < 0.001 || std::fabs(roundy - v.y * 2) < 0.001;
+}
 }
 
 int main() {
     int nx = 2000;
     int ny = 1000;
-    std::cout << "P3\n"
-              << nx << " " << ny << "\n255\n";
 
     constexpr geometry::vec3d lower_left_corner = { -2.0f, -1.0f, -1.0f };
     constexpr geometry::vec3d horizontal = { 4.0f, 0.0f, 0.0f };
     constexpr geometry::vec3d vertical = { 0.0f, 2.0f, 0.0f };
     constexpr geometry::vec3d origin = { 0.0f, 0.0f, 0.0f };
-    std::vector<std::unique_ptr<graphic::hittable>> hittables;
-    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ -1, 0, -1 }, 0.3));
-    hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 1, -1, -4 }, 2));
-    graphic::hittable_list world(std::move(hittables));
+    for (int p = -3; p <= 3; ++p) {
+        std::ofstream out("/home/marcelo/tmp/img-" + std::to_string(p + 3) + ".ppm");
+        out << "P3\n"
+                  << nx << " " << ny << "\n255\n";
+        std::cerr << p << "\n";
+        const float x = float(p) - 1.0f;
+        std::vector<std::unique_ptr<graphic::hittable>> hittables;
+        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, -1 }, 0.3));
+        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, -4 }, 1));
+        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, -10 }, 4));
 
-    for (int j = ny - 1; j >= 0; j--) {
-        for (int i = 0; i < nx; i++) {
-            const float u = float(i) / float(nx);
+        graphic::hittable_list world(std::move(hittables));
+
+        for (int j = 0; j < ny; ++j) {
             const float v = float(j) / float(ny);
-            const graphic::ray r{ origin, lower_left_corner + u * horizontal + v * vertical };
+            const auto dv = v * vertical;
 
-            const graphic::color col = to_color(r, world);
-            std::cout << col << "\n";
+            for (int i = 0; i < nx; ++i) {
+                const float u = float(i) / float(nx);
+                const auto dh = u * horizontal;
+
+
+                if (is_grid(dh, dv)) {
+                    out << "0 0 0\n";
+                } else {
+                    const graphic::ray r{ origin, lower_left_corner + dh + dv };
+                    const graphic::color col = to_color(r, world);
+                    out << col << "\n";
+                }
+            }
         }
+        out.close();
     }
 }
