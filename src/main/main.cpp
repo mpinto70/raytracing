@@ -43,23 +43,24 @@ bool is_grid(const geometry::vec3d& u, const geometry::vec3d& v) {
 }
 
 int main() {
-    int nx = 2000;
-    int ny = 1000;
+    constexpr int nx = 2000;
+    constexpr int ny = 1000;
+    constexpr float window_distance = -20.0f;
 
-    constexpr geometry::vec3d lower_left_corner = { -2.0f, -1.0f, -1.0f };
+    constexpr geometry::vec3d lower_left_corner = { -2.0f, -1.0f, window_distance };
     constexpr geometry::vec3d horizontal = { 4.0f, 0.0f, 0.0f };
     constexpr geometry::vec3d vertical = { 0.0f, 2.0f, 0.0f };
     constexpr geometry::vec3d origin = { 0.0f, 0.0f, 0.0f };
     for (int p = -3; p <= 3; ++p) {
+        std::cerr << p << "\n";
         std::ofstream out("/home/marcelo/tmp/img-" + std::to_string(p + 3) + ".ppm");
         out << "P3\n"
                   << nx << " " << ny << "\n255\n";
-        std::cerr << p << "\n";
         const float x = float(p) - 1.0f;
         std::vector<std::unique_ptr<graphic::hittable>> hittables;
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, -1 }, 0.3));
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, -4 }, 1));
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, -10 }, 4));
+        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 0, 0.5, window_distance }, 0.3));
+        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 1, 0, window_distance - 4 }, 0.5));
+        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + 2, -0.2, window_distance - 10 }, 1));
 
         graphic::hittable_list world(std::move(hittables));
 
