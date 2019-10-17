@@ -17,7 +17,7 @@ public:
     }
     ~hittable_mock() noexcept override;
 
-    bool hit(const ray& r, float t_min, float t_max, hit_record& record) const noexcept override;
+    bool hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept override;
     mutable size_t num_calls;
     std::vector<int> results;
 };

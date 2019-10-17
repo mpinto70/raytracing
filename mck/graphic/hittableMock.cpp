@@ -17,7 +17,7 @@ hittable_mock::~hittable_mock() noexcept {
     EXPECT_EQ(num_calls, results.size());
 }
 
-bool hittable_mock::hit(const ray&, float, float, hit_record&) const noexcept {
+bool hittable_mock::hit(const ray&, dim_t, dim_t, hit_record&) const noexcept {
     const auto index = num_calls;
     ++num_calls;
     EXPECT_LT(index, results.size());

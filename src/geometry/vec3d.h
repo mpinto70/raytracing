@@ -5,8 +5,10 @@
 
 namespace geometry {
 
+using dim_t = float;
+
 struct vec3d {
-    float x, y, z;
+    dim_t x, y, z;
     vec3d& operator+=(const vec3d& v) noexcept {
         x += v.x;
         y += v.y;
@@ -19,13 +21,13 @@ struct vec3d {
         z -= v.z;
         return *this;
     }
-    vec3d& operator*=(float s) noexcept {
+    vec3d& operator*=(dim_t s) noexcept {
         x *= s;
         y *= s;
         z *= s;
         return *this;
     }
-    vec3d& operator/=(float s) noexcept {
+    vec3d& operator/=(dim_t s) noexcept {
         x /= s;
         y /= s;
         z /= s;
@@ -55,19 +57,19 @@ constexpr vec3d operator-(const vec3d& u, const vec3d& v) noexcept {
     return vec3d{ u.x - v.x, u.y - v.y, u.z - v.z };
 }
 
-constexpr vec3d operator*(const vec3d& v, float s) noexcept {
+constexpr vec3d operator*(const vec3d& v, dim_t s) noexcept {
     return vec3d{ v.x * s, v.y * s, v.z * s };
 }
 
-constexpr vec3d operator*(float s, const vec3d& v) noexcept {
+constexpr vec3d operator*(dim_t s, const vec3d& v) noexcept {
     return v * s;
 }
 
-constexpr vec3d operator/(const vec3d& v, float s) noexcept {
+constexpr vec3d operator/(const vec3d& v, dim_t s) noexcept {
     return vec3d{ v.x / s, v.y / s, v.z / s };
 }
 
-constexpr float dot(const vec3d& u, const vec3d& v) noexcept {
+constexpr dim_t dot(const vec3d& u, const vec3d& v) noexcept {
     return u.x * v.x + u.y * v.y + u.z * v.z;
 }
 
@@ -77,11 +79,11 @@ constexpr vec3d cross(const vec3d& u, const vec3d& v) noexcept {
         u.x * v.y - u.y * v.x };
 }
 
-constexpr float size_square(const vec3d& v) noexcept {
+constexpr dim_t size_square(const vec3d& v) noexcept {
     return dot(v, v);
 }
 
-inline float size(const vec3d& v) noexcept {
+inline dim_t size(const vec3d& v) noexcept {
     return std::sqrt(size_square(v));
 }
 

@@ -108,8 +108,8 @@ TEST(vec3d, size) {
     EXPECT_EQ(size(J), 1);
     EXPECT_EQ(size(K), 1);
 
-    EXPECT_EQ(size(U), std::sqrt(194.0f));
-    EXPECT_EQ(size(V), std::sqrt(21.0f));
+    EXPECT_EQ(size(U), std::sqrt(dim_t(194)));
+    EXPECT_EQ(size(V), std::sqrt(dim_t(21)));
 }
 
 TEST(vec3d, unity) {
@@ -117,7 +117,7 @@ TEST(vec3d, unity) {
     EXPECT_EQ(unity(J), J);
     EXPECT_EQ(unity(K), K);
 
-    EXPECT_EQ(unity(U), U / std::sqrt(194.0f));
-    EXPECT_EQ(unity(V), V / std::sqrt(21.0f));
+    EXPECT_EQ(unity(U), U / std::sqrt(dim_t(194)));
+    EXPECT_EQ(unity(V), V / std::sqrt(dim_t(21)));
 }
 }
