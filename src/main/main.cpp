@@ -36,22 +36,24 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
 }
 
 bool is_grid(const geometry::vec3d& u, const geometry::vec3d& v) {
-    const dim_t roundx = std::round(u.x * 2);
-    const dim_t roundy = std::round(v.y * 2);
-    return std::fabs(roundx - u.x * 2) < 0.001 || std::fabs(roundy - v.y * 2) < 0.001;
+    const dim_t round_x = std::round(u.x * 2);
+    const dim_t round_y = std::round(v.y * 2);
+    return std::fabs(round_x - u.x * 2) < 0.001 || std::fabs(round_y - v.y * 2) < 0.001;
 }
 }
 
 int main() {
+    using geometry::vec3d;
+
     constexpr int nx = 2000;
     constexpr int ny = 1000;
-    constexpr auto window_position = dim_t(-50.0);
-    constexpr auto camera_position = dim_t(0.0);
+    constexpr auto window_position = dim_t(-10.0);
+    constexpr auto camera_position = dim_t(10.0);
 
-    constexpr geometry::vec3d lower_left_corner = { dim_t(-2.0), dim_t(-1.0), window_position };
-    constexpr geometry::vec3d horizontal = { dim_t(4.0), dim_t(0.0), dim_t(0.0) };
-    constexpr geometry::vec3d vertical = { dim_t(0.0), dim_t(2.0), dim_t(0.0) };
-    constexpr geometry::vec3d origin = { dim_t(0.0), dim_t(0.0), camera_position };
+    constexpr vec3d lower_left_corner = { dim_t(-2.0), dim_t(-1.0), window_position };
+    constexpr vec3d horizontal = { dim_t(4.0), dim_t(0.0), dim_t(0.0) };
+    constexpr vec3d vertical = { dim_t(0.0), dim_t(2.0), dim_t(0.0) };
+    constexpr vec3d origin = { dim_t(0.0), dim_t(0.0), camera_position };
     for (int p = -3; p <= 3; ++p) {
         std::cerr << p << "\n";
         std::ofstream out("/home/marcelo/tmp/img-" + std::to_string(p + 3) + ".ppm");
@@ -59,10 +61,9 @@ int main() {
             << nx << " " << ny << "\n255\n";
         const dim_t x = dim_t(p) - dim_t(1.0);
         std::vector<std::unique_ptr<graphic::hittable>> hittables;
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 0, 0, window_position - 2 }, 1));
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ 0, 0, window_position }, 0.5));
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + dim_t(1.1), 0, window_position }, 0.3));
-        hittables.push_back(std::make_unique<graphic::sphere>(geometry::vec3d{ x + dim_t(1.9), 0, window_position }, 0.3));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, 0, window_position }, 0.5));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ x + dim_t(1.1), 0, window_position + 3 }, 0.3));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ x + dim_t(1.9), 0, window_position + 4 }, 0.3));
 
         graphic::hittable_list world(std::move(hittables));
 
@@ -77,7 +78,7 @@ int main() {
                 if (is_grid(dh, dv)) {
                     out << "0 0 0\n";
                 } else {
-                    const graphic::ray r{ origin, lower_left_corner + dh + dv };
+                    const graphic::ray r{ origin, (lower_left_corner + dh + dv) - origin };
                     const graphic::color col = to_color(r, world);
                     out << col << "\n";
                 }

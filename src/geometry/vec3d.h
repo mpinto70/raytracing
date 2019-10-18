@@ -5,7 +5,7 @@
 
 namespace geometry {
 
-using dim_t = float;
+using dim_t = double;
 
 struct vec3d {
     dim_t x, y, z;

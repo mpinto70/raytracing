@@ -28,7 +28,7 @@ TEST(hit_record, creation) {
 using ::testing::Return;
 using ::testing::StrictMock;
 TEST(hittable, hit) {
-    mck::hittable_mock hittable_mock({true, false});
+    mck::hittable_mock hittable_mock({ true, false });
 
     hit_record record = { -3.0f, p1, n1 };
     const ray r{ p2, n2 };
