@@ -5,5 +5,7 @@ add_library(
     color.cpp
     sphere.cpp
     hittable_list.cpp
+    random.cpp
+    camera.cpp
 )
 

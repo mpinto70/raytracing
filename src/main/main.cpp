@@ -1,4 +1,5 @@
 #include "geometry/vec3d.h"
+#include "graphic/camera.h"
 #include "graphic/color.h"
 #include "graphic/hittable_list.h"
 #include "graphic/ray.h"
@@ -34,12 +35,6 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
         return (dim_t(1.0) - ratio) * color{ 255, 255, 255 } + ratio * color{ 127, 178, 255 };
     }
 }
-
-bool is_grid(const geometry::vec3d& u, const geometry::vec3d& v) {
-    const dim_t round_x = std::round(u.x * 2);
-    const dim_t round_y = std::round(v.y * 2);
-    return std::fabs(round_x - u.x * 2) < 0.001 || std::fabs(round_y - v.y * 2) < 0.001;
-}
 }
 
 int main() {
@@ -51,9 +46,8 @@ int main() {
     constexpr auto camera_position = dim_t(10.0);
 
     constexpr vec3d lower_left_corner = { dim_t(-2.0), dim_t(-1.0), window_position };
-    constexpr vec3d horizontal = { dim_t(4.0), dim_t(0.0), dim_t(0.0) };
-    constexpr vec3d vertical = { dim_t(0.0), dim_t(2.0), dim_t(0.0) };
     constexpr vec3d origin = { dim_t(0.0), dim_t(0.0), camera_position };
+    graphic::camera cam(origin, lower_left_corner, 4, 2);
     for (int p = -3; p <= 3; ++p) {
         std::cerr << p << "\n";
         std::ofstream out("/home/marcelo/tmp/img-" + std::to_string(p + 3) + ".ppm");
@@ -69,19 +63,13 @@ int main() {
 
         for (int j = 0; j < ny; ++j) {
             const dim_t v = dim_t(j) / dim_t(ny);
-            const auto dv = v * vertical;
 
             for (int i = 0; i < nx; ++i) {
                 const dim_t u = dim_t(i) / dim_t(nx);
-                const auto dh = u * horizontal;
 
-                if (is_grid(dh, dv)) {
-                    out << "0 0 0\n";
-                } else {
-                    const graphic::ray r{ origin, (lower_left_corner + dh + dv) - origin };
-                    const graphic::color col = to_color(r, world);
-                    out << col << "\n";
-                }
+                const graphic::ray r = cam.get_ray(u, v);
+                const graphic::color col = to_color(r, world);
+                out << col << "\n";
             }
         }
         out.close();
