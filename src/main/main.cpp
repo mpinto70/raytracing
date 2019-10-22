@@ -28,15 +28,18 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
         return DEFAULT_COLOR;
     }
     hit_record rec{};
-    if (world.hit(ray, 0.01, dim_t(15000000.0), rec)) {
-        const auto target = reflection_direction(ray.direction(), rec.normal);
-        if (not target)
-            return DEFAULT_COLOR;
-        auto color = to_color(graphic::ray(rec.p, *target), world, ++bounces);
-        color.r *= 0.1;
-        color.g *= 0.4;
-        color.b *= 0.8;
-        return color;
+    if (const auto hit_object = world.hit(ray, 0.01, dim_t(15000000.0), rec)) {
+        const auto next_ray = hit_object->get().bounce(ray, rec);
+        if (not next_ray) {
+            const auto continuation_ray = graphic::ray(rec.p, ray.direction());
+            return to_color(continuation_ray, world, ++bounces);
+        } else {
+            auto color = to_color(*next_ray, world, ++bounces);
+            color.r *= 0.1;
+            color.g *= 0.4;
+            color.b *= 0.8;
+            return color;
+        }
     } else {
         return DEFAULT_COLOR;
     }
@@ -61,7 +64,7 @@ int main() {
             << nx << " " << ny << "\n255\n";
         std::vector<std::unique_ptr<graphic::hittable>> hittables;
         hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, 0.3, window_position }, 0.5));
-        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ -1, -0.2, window_position - 3}, 0.3));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ -1, -0.2, window_position - 3 }, 0.3));
         hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, -100.5, -1 }, 100));
 
         graphic::hittable_list world(std::move(hittables));
