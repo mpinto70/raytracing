@@ -29,10 +29,10 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
     }
     hit_record rec{};
     if (world.hit(ray, 0.01, dim_t(15000000.0), rec)) {
-        const vec3d target = reflection_direction(ray.direction(), rec.normal);
-        if (target == vec3d{ 0, 0, 0 })
+        const auto target = reflection_direction(ray.direction(), rec.normal);
+        if (not target)
             return DEFAULT_COLOR;
-        auto color = to_color(graphic::ray(rec.p, target), world, ++bounces);
+        auto color = to_color(graphic::ray(rec.p, *target), world, ++bounces);
         color.r *= 0.1;
         color.g *= 0.4;
         color.b *= 0.8;

@@ -37,4 +37,12 @@ bool sphere::hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) con
     }
     return false;
 }
+
+std::optional<ray> sphere::bounce(const ray& r, const hit_record& record) const noexcept {
+    using geometry::vec3d;
+    const auto target = reflection_direction(r.direction(), record.normal);
+    if (target)
+        return ray(record.p, *target);
+    return std::nullopt;
+}
 }

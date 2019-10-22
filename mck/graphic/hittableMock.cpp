@@ -27,5 +27,9 @@ bool hittable_mock::hit(const ray&, dim_t, dim_t, hit_record&) const noexcept {
     return results[index];
 }
 
+std::optional<ray> hittable_mock::bounce(const ray&, const hit_record&) const noexcept {
+    return std::nullopt;
+}
+
 }
 }

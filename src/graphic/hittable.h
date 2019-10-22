@@ -18,6 +18,7 @@ class hittable {
 public:
     virtual ~hittable() noexcept = default;
     virtual bool hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept = 0;
+    virtual std::optional<ray> bounce(const ray& r, const hit_record& record) const noexcept = 0;
 };
 
 }

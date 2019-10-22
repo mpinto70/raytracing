@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <optional>
 #include <type_traits>
 
 namespace geometry {
@@ -91,5 +92,5 @@ inline vec3d unity(const vec3d& v) noexcept {
     return v / size(v);
 }
 
-vec3d reflection_direction(const vec3d& light_direction, const vec3d& normal_direction);
+std::optional<vec3d> reflection_direction(const vec3d& light_direction, const vec3d& normal_direction);
 }

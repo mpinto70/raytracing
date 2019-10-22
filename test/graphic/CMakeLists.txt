@@ -7,8 +7,8 @@ set(graphic_srcs
 
 set(graphic_libs
     mck_graphic
-    geometry
     graphic
+    geometry
 )
 
 add_unit_test(
