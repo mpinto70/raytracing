@@ -63,9 +63,9 @@ int main() {
         out << "P3\n"
             << nx << " " << ny << "\n255\n";
         std::vector<std::unique_ptr<graphic::hittable>> hittables;
-        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, 0.3, window_position }, 0.5));
-        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ -1, -0.2, window_position - 3 }, 0.3));
-        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, -100.5, -1 }, 100));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, 0.3, window_position }, 0.5, 0.1, 0.4, 0.8));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ -1, -0.2, window_position - 3 }, 0.3, 0.4, 0.8, 0.1));
+        hittables.push_back(std::make_unique<graphic::sphere>(vec3d{ 0, -100.5, window_position - 1 }, 100, 0.8, 0.1, 0.1));
 
         graphic::hittable_list world(std::move(hittables));
 
