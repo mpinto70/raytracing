@@ -13,6 +13,9 @@ public:
 
     [[nodiscard]] const geometry::vec3d& center() const noexcept { return center_; }
     [[nodiscard]] dim_t radius() const noexcept { return radius_; }
+    [[nodiscard]] dim_t dim_r() const noexcept { return dim_r_; }
+    [[nodiscard]] dim_t dim_g() const noexcept { return dim_g_; }
+    [[nodiscard]] dim_t dim_b() const noexcept { return dim_b_; }
 
     bool hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept override;
     [[nodiscard]] std::optional<ray> bounce(const ray& r, const hit_record& record) const noexcept override;
