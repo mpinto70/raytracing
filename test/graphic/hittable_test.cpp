@@ -1,5 +1,5 @@
-#include "graphic/hittable.h"
 #include "geometry/vec3d.h"
+#include "graphic/hittable.h"
 
 #include "../mck/graphic/hittable_mock.h"
 

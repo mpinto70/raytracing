@@ -9,11 +9,11 @@ void set_record(const ray& r, dim_t t, hit_record& record, const geometry::vec3d
 }
 }
 
-sphere::sphere(const geometry::vec3d& center, dim_t radius, dim_t dim_r, dim_t dim_g, dim_t dim_b) noexcept
+sphere_reflexive::sphere_reflexive(const geometry::vec3d& center, dim_t radius, dim_t dim_r, dim_t dim_g, dim_t dim_b) noexcept
       : center_(center), radius_(radius), dim_r_(dim_r), dim_g_(dim_g), dim_b_(dim_b) {
 }
 
-bool sphere::hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept {
+bool sphere_reflexive::hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept {
     using geometry::vec3d;
 
     const vec3d oc = r.origin() - center_;
@@ -38,7 +38,7 @@ bool sphere::hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) con
     return false;
 }
 
-std::optional<ray> sphere::bounce(const ray& r, const hit_record& record) const noexcept {
+std::optional<ray> sphere_reflexive::bounce(const ray& r, const hit_record& record) const noexcept {
     using geometry::vec3d;
     const auto target = reflection_direction(r.direction(), record.normal);
     if (target)
@@ -46,7 +46,7 @@ std::optional<ray> sphere::bounce(const ray& r, const hit_record& record) const 
     return std::nullopt;
 }
 
-color sphere::dim(color c) const noexcept {
+color sphere_reflexive::dim(color c) const noexcept {
     c.r *= dim_r_;
     c.g *= dim_g_;
     c.b *= dim_b_;

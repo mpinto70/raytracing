@@ -6,10 +6,10 @@
 
 namespace graphic {
 
-class sphere : public hittable {
+class sphere_reflexive : public hittable {
 public:
-    sphere(const geometry::vec3d& center, dim_t radius, dim_t dim_r, dim_t dim_g, dim_t dim_b) noexcept;
-    ~sphere() noexcept override = default;
+    sphere_reflexive(const geometry::vec3d& center, dim_t radius, dim_t dim_r, dim_t dim_g, dim_t dim_b) noexcept;
+    ~sphere_reflexive() noexcept override = default;
 
     [[nodiscard]] const geometry::vec3d& center() const noexcept { return center_; }
     [[nodiscard]] dim_t radius() const noexcept { return radius_; }
