@@ -1,4 +1,4 @@
-#include "graphic/sphere.h"
+#include "graphic/sphere_reflexive.h"
 
 #include <gtest/gtest.h>
 

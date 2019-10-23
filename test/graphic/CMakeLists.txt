@@ -1,8 +1,8 @@
 set(graphic_srcs
-    rayTest.cpp
-    colorTest.cpp
-    hittableTest.cpp
-    sphereTest.cpp
+    ray_test.cpp
+    color_test.cpp
+    hittable_test.cpp
+    sphere_reflexive_test.cpp
 )
 
 set(graphic_libs

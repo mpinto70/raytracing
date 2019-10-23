@@ -1,7 +1,7 @@
 #include "graphic/hittable.h"
 #include "geometry/vec3d.h"
 
-#include "../mck/graphic/hittableMock.h"
+#include "../mck/graphic/hittable_mock.h"
 
 #include <gtest/gtest.h>
 

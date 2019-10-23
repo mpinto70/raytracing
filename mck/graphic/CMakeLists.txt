@@ -1,5 +1,5 @@
 set(graphic_srcs
-    hittableMock.cpp
+    hittable_mock.cpp
 )
 
 add_mock_lib(

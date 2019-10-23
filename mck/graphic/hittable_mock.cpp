@@ -1,4 +1,4 @@
-#include "hittableMock.h"
+#include "hittable_mock.h"
 
 namespace graphic {
 bool operator==(const hit_record& lhs, const hit_record& rhs) {

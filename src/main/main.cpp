@@ -3,7 +3,7 @@
 #include "graphic/color.h"
 #include "graphic/hittable_list.h"
 #include "graphic/ray.h"
-#include "graphic/sphere.h"
+#include "graphic/sphere_reflexive.h"
 
 #include <cmath>
 #include <fstream>

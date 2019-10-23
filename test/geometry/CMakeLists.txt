@@ -1,5 +1,5 @@
 set(geometry_srcs
-    vec3dTest.cpp
+    vec3d_test.cpp
 )
 
 set(geometry_libs
