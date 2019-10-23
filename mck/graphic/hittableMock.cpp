@@ -31,5 +31,9 @@ std::optional<ray> hittable_mock::bounce(const ray&, const hit_record&) const no
     return std::nullopt;
 }
 
+color hittable_mock::dim(color c) const noexcept {
+    return c;
+}
+
 }
 }

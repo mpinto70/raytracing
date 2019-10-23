@@ -1,6 +1,7 @@
 #pragma once
 
-#include "graphic/ray.h"
+#include "color.h"
+#include "ray.h"
 
 #include <type_traits>
 
@@ -18,7 +19,8 @@ class hittable {
 public:
     virtual ~hittable() noexcept = default;
     virtual bool hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept = 0;
-    virtual std::optional<ray> bounce(const ray& r, const hit_record& record) const noexcept = 0;
+    [[nodiscard]] virtual std::optional<ray> bounce(const ray& r, const hit_record& record) const noexcept = 0;
+    [[nodiscard]] virtual color dim(color c) const noexcept = 0;
 };
 
 }

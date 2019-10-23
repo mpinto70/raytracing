@@ -32,12 +32,12 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
         const auto next_ray = hit_object->get().bounce(ray, rec);
         if (not next_ray) {
             const auto continuation_ray = graphic::ray(rec.p, ray.direction());
+
             return to_color(continuation_ray, world, ++bounces);
         } else {
             auto color = to_color(*next_ray, world, ++bounces);
-            color.r *= 0.1;
-            color.g *= 0.4;
-            color.b *= 0.8;
+            color = hit_object->get().dim(color);
+
             return color;
         }
     } else {

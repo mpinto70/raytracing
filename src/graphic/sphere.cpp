@@ -45,4 +45,13 @@ std::optional<ray> sphere::bounce(const ray& r, const hit_record& record) const 
         return ray(record.p, *target);
     return std::nullopt;
 }
+
+color sphere::dim(color c) const noexcept {
+    c.r *= 0.1;
+    c.g *= 0.4;
+    c.b *= 0.8;
+
+    return c;
+}
+
 }

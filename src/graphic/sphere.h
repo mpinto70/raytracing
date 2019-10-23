@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphic/hittable.h"
+#include "hittable.h"
 
 #include <type_traits>
 
@@ -15,7 +15,8 @@ public:
     [[nodiscard]] dim_t radius() const noexcept { return radius_; }
 
     bool hit(const ray& r, dim_t t_min, dim_t t_max, hit_record& record) const noexcept override;
-    std::optional<ray> bounce(const ray& r, const hit_record& record) const noexcept override;
+    [[nodiscard]] std::optional<ray> bounce(const ray& r, const hit_record& record) const noexcept override;
+    [[nodiscard]] color dim(color c) const noexcept override;
 
 private:
     geometry::vec3d center_;
