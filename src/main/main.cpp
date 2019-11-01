@@ -4,6 +4,7 @@
 #include "graphic/hittable_list.h"
 #include "graphic/ray.h"
 #include "graphic/sphere_reflexive.h"
+#include "graphic/sphere_transparent.h"
 
 #include <cmath>
 #include <fstream>
@@ -24,7 +25,7 @@ graphic::color to_color(const graphic::ray& ray, const graphic::hittable_list& w
     using graphic::color;
     using graphic::hit_record;
     constexpr color DEFAULT_COLOR{ 0xff, 0xff, 0xff };
-    if (bounces == 100) {
+    if (bounces == 10) {
         return DEFAULT_COLOR;
     }
     hit_record rec{};
@@ -52,19 +53,20 @@ int main() {
     constexpr int nx = 2000;
     constexpr int ny = 1000;
     constexpr auto window_position = dim_t(-1.0);
-    constexpr auto camera_position = dim_t(100.0);
+    constexpr auto camera_distance = dim_t(30.0);
 
     constexpr vec3d lower_left_corner = { dim_t(-2.0), dim_t(-1.0), window_position };
-    constexpr vec3d origin = { dim_t(0.0), dim_t(0.0), camera_position };
-    graphic::camera cam(origin, lower_left_corner, 4, 2);
-    for (int p = 0; p <= 0; ++p) {
+    constexpr vec3d origin = { dim_t(0.0), dim_t(0.0), camera_distance };
+    for (int p = 0; p <= 6; ++p) {
+        graphic::camera cam(origin + p * vec3d{ 1, 2, 0 }, lower_left_corner, 4, 2);
         std::cerr << p << "\n";
-        std::ofstream out("/home/marcelo/tmp/img-" + std::to_string(p + 3) + ".ppm");
+        std::ofstream out("/home/marcelo/tmp/img-" + std::to_string(p) + ".ppm");
         out << "P3\n"
             << nx << " " << ny << "\n255\n";
         using graphic::sphere_reflexive;
+        using graphic::sphere_transparent;
         std::vector<std::unique_ptr<graphic::hittable>> hittables;
-        hittables.push_back(std::make_unique<sphere_reflexive>(vec3d{ 0, 0.3, window_position }, 0.5, 0.1, 0.4, 0.8));
+        hittables.push_back(std::make_unique<sphere_transparent>(vec3d{ 0, 0.3, window_position }, 0.5, 1.3, 0.9, 0.9, 0.9));
         hittables.push_back(std::make_unique<sphere_reflexive>(vec3d{ -1, -0.2, window_position - 3 }, 0.3, 0.4, 0.8, 0.1));
         hittables.push_back(std::make_unique<sphere_reflexive>(vec3d{ 0, -100.5, window_position - 1 }, 100, 0.8, 0.1, 0.1));
 

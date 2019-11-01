@@ -3,6 +3,7 @@ set(graphic_srcs
     color_test.cpp
     hittable_test.cpp
     sphere_reflexive_test.cpp
+    sphere_transparent_test.cpp
 )
 
 set(graphic_libs
