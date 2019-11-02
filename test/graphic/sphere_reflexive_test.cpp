@@ -16,14 +16,14 @@ TEST(sphere_reflexive, creation) {
 
     EXPECT_EQ(S1.center(), C1);
     EXPECT_EQ(S1.radius(), R1);
-    EXPECT_EQ(S1.dim_r(), 0.1);
-    EXPECT_EQ(S1.dim_g(), 0.2);
-    EXPECT_EQ(S1.dim_b(), 0.3);
+    EXPECT_EQ(S1.dim_r(), dim_t(0.1));
+    EXPECT_EQ(S1.dim_g(), dim_t(0.2));
+    EXPECT_EQ(S1.dim_b(), dim_t(0.3));
     EXPECT_EQ(S2.center(), C2);
     EXPECT_EQ(S2.radius(), R2);
-    EXPECT_EQ(S2.dim_r(), 0.4);
-    EXPECT_EQ(S2.dim_g(), 0.5);
-    EXPECT_EQ(S2.dim_b(), 0.7);
+    EXPECT_EQ(S2.dim_r(), dim_t(0.4));
+    EXPECT_EQ(S2.dim_g(), dim_t(0.5));
+    EXPECT_EQ(S2.dim_b(), dim_t(0.7));
 }
 
 TEST(sphere_reflexive, hit_simple_and_direct) {
