@@ -36,3 +36,7 @@ build/
 bin/
 lib/
 gtest/
+
+# doc files
+Gemfile.lock
+_site/
