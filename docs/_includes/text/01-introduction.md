@@ -69,5 +69,5 @@ $$
 t=\frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \tag{6}
 $$
 
-If $$t<0$$ the ray crosses the sphere behind its origin. Note also that if $$\mathbf{B}$$ is a unitary vector, 
-$$a = \mathbf{B} \cdot \mathbf{B} = 1$$.
+If $$t<0$$ the ray crosses the sphere behind the ray's origin ($$\mathbf{A}$$). Note also that, if $$\mathbf{B}$$ is a 
+unitary vector, $$a = \mathbf{B} \cdot \mathbf{B} = 1$$.
