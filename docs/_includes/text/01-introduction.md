@@ -28,6 +28,8 @@ object in the environment.
 <img src="assets/images/03-sphere.svg">
 </p>
 
+### Ray hitting a sphere
+
 For a sphere, the hit point is determined by the equation:
 
 $$
@@ -71,3 +73,30 @@ $$
 
 If $$t<0$$ the ray crosses the sphere behind the ray's origin ($$\mathbf{A}$$). Note also that, if $$\mathbf{B}$$ is a 
 unitary vector, $$a = \mathbf{B} \cdot \mathbf{B} = 1$$.
+
+### Ray reflecting from a surface
+
+See [vector formulation of reflection](https://en.wikipedia.org/wiki/Snell%27s_law#Vector_form) article in wikipedia.
+
+<p align="center">
+<img src="assets/images/05-reflection.svg">
+</p>
+
+If the ray direction vector and the normal are unitary vectors:
+
+$$
+\cos \theta = -\mathbf{B} \cdot \mathbf{n} \tag{7} 
+$$
+
+$$
+\mathbf{v}_{\mathrm{reflect}} = \mathbf{B} + 2\cos\theta \mathbf{n} \tag{8}
+$$
+
+Replacing eq. 7 in eq. 8:
+
+$$
+\mathbf{v}_{\mathrm{reflect}} = \mathbf{B} - 2(\mathbf{B} \cdot \mathbf{n}) \mathbf{n} \tag{9}
+$$
+
+
+
